@@ -1,4 +1,18 @@
-export const Card = ({ product }) => {
+import { useState } from "react";
+
+export const Card = ({ product, handleAdd, handleRemove }) => {
+  const [added, setAdded] = useState(false);
+
+  const clickAgregar = () => {
+    handleAdd()
+    setAdded(true);
+  };
+
+  const clickQuitar = () => {
+    handleRemove()
+    setAdded(false);
+  };
+
   return (
     <>
       <div key={product.id} className="tarjeta">
@@ -11,9 +25,21 @@ export const Card = ({ product }) => {
           <h5 className="tarjeta-titulo">{product.title}</h5>
           <p className="tarjeta-descripcion">{product.description}</p>
           <p className="tarjeta-precio">${product.price}</p>
-          <a href="#" className="boton-agregar">
-            Add
-          </a>
+          {added ? (
+            <button
+              type="button"
+              className="boton-quitar"
+              onClick={clickQuitar}>
+              Quitar
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="boton-agregar"
+              onClick={clickAgregar}>
+              Agregar
+            </button>
+          )}
         </div>
       </div>
     </>

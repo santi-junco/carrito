@@ -1,33 +1,35 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Card } from "../components/Card";
+import { ProductsContext } from "../context/ProductsContext";
+import { CarritoContext } from "../context/CarritoContext";
 
 export const ComprasPage = () => {
-  const [productos, setProductos] = useState([]);
+  const { productos } = useContext(ProductsContext);
+  const {
+    addCompra,
+    removeCompra,
+  } = useContext(CarritoContext);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products`);
-      const data = await response.json();
-      setProductos(data);
-      console.log(data);
-    } catch (error) {
-      console.log(`Error: ${error.message}`);
-    }
+  const handleAdd = (compra) => {
+    addCompra(compra);
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const handleRemove = (id) => {
+    removeCompra(id);
+  };
 
   return (
     <>
       <h1>Products</h1>
       <hr />
-      <ul className="lista-compra">
+      <ul>
         {productos.map((product) => (
-          <li className="item-compra">
-            <Card key={product.id} product={product} />
-          </li>
+          <Card
+            key={product.id}
+            product={product}
+            handleAdd={() => handleAdd(product)}
+            handleRemove={() => handleRemove(product.id)}
+          />
         ))}
       </ul>
     </>
